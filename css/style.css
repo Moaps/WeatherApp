@@ -1,0 +1,9 @@
+.dhx_window-content-without-header {
+    padding: 5px !important
+}
+
+h3.dhx_layout-cell-header__title {
+    font-size: 18px !important;
+    font-weight: 800;
+    height: 28px;
+}

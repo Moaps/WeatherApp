@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:unitau123@164.92.111.91:5432/weatherapp"
+}
+
+model avaliacao {
+  id_avaliacao       Int       @id @default(autoincrement())
+  id_usuario         Int
+  id_dado_clima      Int
+  data               DateTime? @db.Timestamp(6)
+  comentario         String?   @db.VarChar(512)
+  estado_clima       String?   @db.VarChar(100)
+  estado_temperatura String?   @db.VarChar(100)
+  clima              clima     @relation(fields: [id_dado_clima], references: [id_dado_clima], onDelete: NoAction, onUpdate: NoAction)
+  usuario            usuario   @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model clima {
+  id_dado_clima      Int         @id @default(autoincrement())
+  temperatura        Float?
+  precipitacao       Float?
+  data_log           DateTime?   @default(now()) @db.Timestamp(6)
+  local_assoc        String?     @db.VarChar(255)
+  condicao_climatica String?     @db.VarChar(20)
+  vento_max          Float?
+  umidade            Int?
+  sensacao_termica   Float?
+  avaliacao          avaliacao[]
+}
+
+model previsao {
+  id_dado_previsao    Int       @id @default(autoincrement())
+  temperatura_max     Float?
+  temperatura_min     Float?
+  temperatura_med     Float?
+  condicao_climatica  String?   @db.VarChar(50)
+  vento_max           Float?
+  precipitacao_max    Float?
+  probabilidade_chuva Int?
+  data_log            DateTime? @db.Date
+  local_assoc         String?   @db.VarChar(20)
+  umidade             Int?
+}
+
+model usuario {
+  id_usuario  Int         @id @default(autoincrement())
+  nome        String      @db.VarChar(255)
+  login       String      @unique @db.VarChar(50)
+  email       String      @unique @db.VarChar(255)
+  senha       String      @db.VarChar(255)
+  local_assoc String?     @db.VarChar(255)
+  avaliacao   avaliacao[]
+}
