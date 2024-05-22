@@ -254,6 +254,8 @@
                         signWindow.hide();
                         mainWindow.show();
                         mainWindow.setFullScreen();
+                        loadChartData();
+                        loadDataView();
                     })
                     .catch(error => {
                         const errorMessage = error.response ? error.response.data.error : error.message;
@@ -372,48 +374,76 @@
             </div>
         `);
 
-        var diasSemana = [
-            {
-                id: "dia_1",
-                dia: "01/05/2024",
-                chuva: "Chuva: <strong>9%</strong>",
-                min_temp: "Min: <strong>21°C</strong>",
-                max_temp: "Máx: <strong>31°C</strong>",
-                photo: "../assets/imgs/cloud-sun.svg"
-            },
-            {
-                id: "dia_2",
-                dia: "02/05/2024",
-                chuva: "Chuva: <strong>9%</strong>",
-                min_temp: "Min: <strong>21°C</strong>",
-                max_temp: "Máx: <strong>31°C</strong>",
-                photo: "../assets/imgs/cloud-sun.svg"
-            },
-            {
-                id: "dia_3",
-                dia: "03/05/2024",
-                chuva: "Chuva: <strong>9%</strong>",
-                min_temp: "Min: <strong>21°C</strong>",
-                max_temp: "Máx: <strong>31°C</strong>",
-                photo: "../assets/imgs/cloud-sun.svg"
-            },
-            {
-                id: "dia_4",
-                dia: "04/05/2024",
-                chuva: "Chuva: <strong>9%</strong>",
-                min_temp: "Min: <strong>21°C</strong>",
-                max_temp: "Máx: <strong>31°C</strong>",
-                photo: "../assets/imgs/cloud-sun.svg"
-            },
-            {
-                id: "dia_5",
-                dia: "05/05/2024",
-                chuva: "Chuva: <strong>9%</strong>",
-                min_temp: "Min: <strong>21°C</strong>",
-                max_temp: "Máx: <strong>31°C</strong>",
-                photo: "../assets/imgs/cloud-sun.svg"
+        async function loadDataView() {
+            try {
+                const response = await axios.get('http://localhost:3000/previsao-dataview');
+                console.log('Dados recuperados:', response.data);
+                const data = response.data;
+
+                const dataview = new dhx.DataView("dataview", {
+                    template: function (item) {
+                        return `
+                            <div class="item">
+                                <img src="${item.photo}" alt="Weather icon">
+                                <div>${item.dia}</div>
+                                <div>${item.chuva}</div>
+                                <div>${item.min_temp}</div>
+                                <div>${item.max_temp}</div>
+                            </div>`;
+                    }
+                });
+
+                dataview.data.parse(data);
+                console.log('DataView created and data loaded');
+            } catch (error) {
+                const errorMessage = error.response ? error.response.data.error : error.message;
+                console.error('Error fetching data for DataView:', errorMessage);
+                alert('Erro ao buscar dados para DataView: ' + errorMessage);
             }
-        ];
+        }
+
+        // var diasSemana = [
+        //     {
+        //         id: "dia_1",
+        //         dia: "01/05/2024",
+        //         chuva: "Chuva: <strong>9%</strong>",
+        //         min_temp: "Min: <strong>21°C</strong>",
+        //         max_temp: "Máx: <strong>31°C</strong>",
+        //         photo: "../assets/imgs/cloud-sun.svg"
+        //     },
+        //     {
+        //         id: "dia_2",
+        //         dia: "02/05/2024",
+        //         chuva: "Chuva: <strong>9%</strong>",
+        //         min_temp: "Min: <strong>21°C</strong>",
+        //         max_temp: "Máx: <strong>31°C</strong>",
+        //         photo: "../assets/imgs/cloud-sun.svg"
+        //     },
+        //     {
+        //         id: "dia_3",
+        //         dia: "03/05/2024",
+        //         chuva: "Chuva: <strong>9%</strong>",
+        //         min_temp: "Min: <strong>21°C</strong>",
+        //         max_temp: "Máx: <strong>31°C</strong>",
+        //         photo: "../assets/imgs/cloud-sun.svg"
+        //     },
+        //     {
+        //         id: "dia_4",
+        //         dia: "04/05/2024",
+        //         chuva: "Chuva: <strong>9%</strong>",
+        //         min_temp: "Min: <strong>21°C</strong>",
+        //         max_temp: "Máx: <strong>31°C</strong>",
+        //         photo: "../assets/imgs/cloud-sun.svg"
+        //     },
+        //     {
+        //         id: "dia_5",
+        //         dia: "05/05/2024",
+        //         chuva: "Chuva: <strong>9%</strong>",
+        //         min_temp: "Min: <strong>21°C</strong>",
+        //         max_temp: "Máx: <strong>31°C</strong>",
+        //         photo: "../assets/imgs/cloud-sun.svg"
+        //     }
+        // ];
         const dataview = new dhx.DataView(null, {
             itemsInRow: 5,
             gap: 10,
@@ -425,16 +455,12 @@
 
         const configChart = {
             type: "line",
-            css: "dhx_widget--bg_white dhx_widget--bordered",
+            css: "dhx_widget--bordered",
             scales: {
-                top: {
-                    size: 20
+                "bottom": {
+                    text: "dia"
                 },
-                bottom: {
-                    text: "t",
-                    showText: false
-                },
-                left: {
+                "left": {
                     maxTicks: 10,
                     max: 100,
                     min: 0
@@ -442,54 +468,61 @@
             },
             series: [
                 {
-                    value: "value",
-                    color: "#5E83BA",
-                    strokeWidth: 5
+                    id: "chuva",
+                    value: "chuva",
+                    color: "#81C4E8",
+                    fill: "#81C4E8",
+                    label: "Chuva do dia",
                 },
                 {
-                    value: "value_2",
-                    color: "#FF7700",
-                    strokeWidth: 5
+                    id: "temperatura",
+                    value: "temperatura",
+                    color: "#FF7C26",
+                    fill: "#FF7C26",
+                    label: "Temperatura do dia",
                 }
-            ]
+            ],
+            legend: {
+                series: ["chuva", "temperatura"],
+                halign: "right",
+                valign: "top"
+            }
         };
 
-        const chart = new dhx.Chart("chart", configChart);
-        chart.data.parse([
-            {
-                value: Math.random() * 100,
-                t: "u" + Date.now() + 1
-            },
-            {
-                value: Math.random() * 100,
-                t: "u" + Date.now() + 2
-            },
-            {
-                value: Math.random() * 100,
-                t: "u" + Date.now() + 3
-            },
-            {
-                value_2: Math.random() * 30,
-                t: "u" + Date.now() + 6
-            },
-            {
-                value_2: Math.random() * 50,
-                t: "u" + Date.now() + 9
-            },
-            {
-                value_2: Math.random() * 2,
-                t: "u" + Date.now() + 30
-            }
-        ]);
 
-        function add() {
-            chart.data.add({
-                value: Math.random() * 100,
-                t: "u" + Date.now()
-            });
+        // Função para carregar dados do servidor
+        async function loadChartData() {
+            console.log('loadChartData called');
+            try {
+                const response = await axios.get('http://localhost:3000/previsao');
+                console.log('Data fetched:', response.data);
+                const data = response.data;
+
+                // Crie e anexe o gráfico após carregar os dados
+                const chart = new dhx.Chart("chart", configChart);
+                chart.data.parse(data);
+                layout.getCell("grafico").attach(chart);
+                console.log('Chart created and data loaded');
+            } catch (error) {
+                const errorMessage = error.response ? error.response.data.error : error.message;
+                console.error('Error fetching chart data:', errorMessage);
+                alert('Erro ao buscar dados do gráfico: ' + errorMessage);
+            }
         }
 
-        layout.getCell("grafico").attach(chart);
+        // teste de exibição de gráfico
+        // const dataTeste = [
+        //     { dia: "01/05", "chuva": 20, "temperatura": 52 },
+        //     { dia: "02/05", "chuva": 5, "temperatura": 33 },
+        //     { dia: "03/05", "chuva": 55, "temperatura": 30 },
+        //     { dia: "04/05", "chuva": 30, "temperatura": 11 },
+        //     { dia: "05/05", "chuva": 27, "temperatura": 14 }
+        // ];
+
+        // const chart = new dhx.Chart("chart", configChart);
+        // chart.data.parse(dataTeste);
+        
+        // layout.getCell("grafico").attach(chart)
 
         // Cria uma nova instância do objeto Date para obter a data atual
         const today = new Date();
