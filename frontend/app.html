@@ -282,7 +282,7 @@
                     header: "Olá, Fulaninho",
                     width: "200px",
                     headerHeight: 40,
-                    html: '<div style="padding: 10px;">Estação atual: <br /> <span><b>Taubaté</b></span></div><div style="padding: 10px;"><span><b>Últimos eventos</b></span><div style="text-wrap: wrap;">Chuva forte - há 15 min<br />Chuva forte imprevista relatada em Taubaté, São Paulo</div></div>',
+                    html: '<div style="padding: 10px;">Estação atual: <br /> <span><b>Taubaté</b></span></div><div style="padding: 12px;text-align: center;font-size: 16px;"><span><b>Últimos eventos</b></span></div><div style="padding: 13px;box-shadow: inset 0px 0px 7px 0px rgba(63 82 221 / 20%);border-right: 5px solid white;border-radius: 6px;"><div style="text-wrap: wrap;">Chuva forte - há 15 min<br />Chuva forte imprevista relatada em Taubaté, São Paulo</div></div>',
                     css: 'dhx_layout-cell-header__title'
                 },
                 {
@@ -309,8 +309,8 @@
         const toolbarButtons = [
             {
                 type: "title",
-                value: "21/04/2024 a 27/04/2024",
-                html: "<span style='position: absolute;top:17px;font-size: 18px;'><strong>21/04/2024 a 27/04/2024</span></strong>"
+                value: "20/05/2024 a 24/05/2024",
+                html: "<span style='position: absolute;top:17px;font-size: 18px;'><strong>20/05/2024 a 24/05/2024</span></strong>"
             },
             {
                 type: "spacer",
@@ -406,42 +406,42 @@
             {
                 id: "dia_1",
                 dia: "20/05/2024",
-                chuva: "Chuva: <strong>9%</strong>",
-                min_temp: "Min: <strong>21°C</strong>",
-                max_temp: "Máx: <strong>31°C</strong>",
-                photo: "../assets/imgs/cloud-sun.svg"
+                chuva: "<strong>Baixa</strong> probabilidade de <strong>chuva</strong>.",
+                min_temp: "Temp. Min: <strong>21°C</strong>",
+                max_temp: "Temp. Máx: <strong>31°C</strong>",
+                photo: "../assets/imgs/weather.svg"
             },
             {
                 id: "dia_2",
                 dia: "21/05/2024",
-                chuva: "Chuva: <strong>9%</strong>",
-                min_temp: "Min: <strong>21°C</strong>",
-                max_temp: "Máx: <strong>31°C</strong>",
-                photo: "../assets/imgs/cloud-sun.svg"
+                chuva: "<strong>Baixa</strong> probabilidade de <strong>chuva</strong>.",
+                min_temp: "Temp. Min: <strong>21°C</strong>",
+                max_temp: "Temp. Máx: <strong>31°C</strong>",
+                photo: "../assets/imgs/weather.svg"
             },
             {
                 id: "dia_3",
                 dia: "22/05/2024",
-                chuva: "Chuva: <strong>9%</strong>",
-                min_temp: "Min: <strong>21°C</strong>",
-                max_temp: "Máx: <strong>31°C</strong>",
-                photo: "../assets/imgs/cloud-sun.svg"
+                chuva: "<strong>Baixa</strong> probabilidade de <strong>chuva</strong>.",
+                min_temp: "Temp. Min: <strong>21°C</strong>",
+                max_temp: "Temp. Máx: <strong>31°C</strong>",
+                photo: "../assets/imgs/weather.svg"
             },
             {
                 id: "dia_4",
                 dia: "23/05/2024",
-                chuva: "Chuva: <strong>9%</strong>",
-                min_temp: "Min: <strong>21°C</strong>",
-                max_temp: "Máx: <strong>31°C</strong>",
-                photo: "../assets/imgs/cloud-sun.svg"
+                chuva: "<strong>Baixa</strong> probabilidade de <strong>chuva</strong>.",
+                min_temp: "Temp. Min: <strong>21°C</strong>",
+                max_temp: "Temp. Máx: <strong>31°C</strong>",
+                photo: "../assets/imgs/weather.svg"
             },
             {
                 id: "dia_5",
                 dia: "24/05/2024",
-                chuva: "Chuva: <strong>9%</strong>",
-                min_temp: "Min: <strong>21°C</strong>",
-                max_temp: "Máx: <strong>31°C</strong>",
-                photo: "../assets/imgs/cloud-sun.svg"
+                chuva: "<strong>Baixa</strong> probabilidade de <strong>chuva</strong>.",
+                min_temp: "Temp. Min: <strong>21°C</strong>",
+                max_temp: "Temp. Máx: <strong>31°C</strong>",
+                photo: "../assets/imgs/weather.svg"
             }
         ];
         const dataview = new dhx.DataView(null, {
@@ -468,13 +468,6 @@
             },
             series: [
                 {
-                    id: "chuva",
-                    value: "chuva",
-                    color: "#81C4E8",
-                    fill: "#81C4E8",
-                    label: "Chuva prevista para o dia",
-                },
-                {
                     id: "temperatura",
                     value: "temperatura",
                     color: "#FF7C26",
@@ -483,7 +476,7 @@
                 }
             ],
             legend: {
-                series: ["chuva", "temperatura"],
+                series: ["temperatura"],
                 halign: "right",
                 valign: "top"
             }
@@ -512,11 +505,11 @@
 
         // teste de exibição de gráfico
         const dataGrafico = [
-            { dia: "20/05", "chuva": 5, "temperatura": 30 },
-            { dia: "21/05", "chuva": 5, "temperatura": 33 },
-            { dia: "22/05", "chuva": 10, "temperatura": 20 },
-            { dia: "23/05", "chuva": 2.5, "temperatura": 25 },
-            { dia: "24/05", "chuva": 6, "temperatura": 27 }
+            { dia: "20/05", "temperatura": 30 },
+            { dia: "21/05", "temperatura": 33 },
+            { dia: "22/05", "temperatura": 20 },
+            { dia: "23/05", "temperatura": 25 },
+            { dia: "24/05", "temperatura": 27 }
         ];
 
         const chart = new dhx.Chart("chart", configChart);
